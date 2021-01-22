@@ -31,6 +31,8 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "./node_modules/@videogular/ngx-videogular/fonts/videogular.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -94,6 +96,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -127,5 +130,8 @@
       }
     }
   },
-  "defaultProject": "direct-du-droit"
+  "defaultProject": "direct-du-droit",
+  "cli": {
+    "analytics": "30af3ffa-6f80-43e7-a75d-8ee634f2c0a2"
+  }
 }
