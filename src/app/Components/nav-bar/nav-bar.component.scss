@@ -1,3 +1,9 @@
+@mixin for-phone-only{
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+
 .appContainer {
   position: relative;
   padding: 0;
@@ -38,7 +44,7 @@
         width: 280px;
         height: 480px;
         border-radius: 35px;
-        z-index: 10;
+        z-index: 5;
         span {
           position: absolute;
           height: 75px;
@@ -126,6 +132,12 @@
   background-color: #F6F6FA;
   border-top-left-radius: 300px;
   border-bottom-right-radius: 350px;
+  @include for-phone-only {
+    padding-right: 10px;
+    padding-left: 10px;
+    border-top-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+  }
   .sectionTitle {
     color: #616161;
     font-family: Arial, sans-serif;
@@ -135,6 +147,9 @@
     line-height: 31px;
     letter-spacing: 2px;
     text-transform: uppercase;
+    @include for-phone-only {
+      font-size: 1.2rem;
+    }
   }
   .howItWork {
     .howItWorkTitle {
@@ -191,7 +206,7 @@
     .cardContainer{
       margin-top: 40px;
       mat-card{
-        width: 320px;
+        max-width: 320px;
         min-height: 200px;
         margin-left: auto;
         margin-right: auto;
@@ -219,7 +234,6 @@
     .videoContainer {
       padding: 30px 0;
       max-width: 1000px;
-      height: 520px;
       margin-right: auto;
       margin-left: auto;
       mat-card {
@@ -236,6 +250,13 @@
         width: 100%;
         margin-bottom: -1.15rem;
       }
+      .submitButton {
+        font-size: 17px;
+        width: 250px;
+        @include for-phone-only {
+          width: 100%;
+        }
+      }
     }
   }
   .footerContainer {
@@ -247,6 +268,11 @@
       font-weight: bold;
       line-height: 32px;
       letter-spacing: 1px;
+      @include for-phone-only {
+        font-size: 16px;
+        letter-spacing: 0;
+      }
     }
   }
 }
+
