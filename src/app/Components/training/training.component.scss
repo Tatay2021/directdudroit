@@ -1,0 +1,136 @@
+@mixin for-phone-only{
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+.trainingContainer {
+  .jumbotronContainer{
+    position: relative;
+    background-color: #3239BB;
+    min-height: 560px;
+    .jumbotronDetails {
+      padding-top: 150px;
+      padding-left: 100px;
+      padding-right: 100px;
+      color: white;
+      font-family: Arial, sans-serif;
+      letter-spacing: 1px;
+      @include for-phone-only {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      h1 {
+        font-size: 32px;
+        font-weight: bold;
+        line-height: 40px;
+        letter-spacing: 3px;
+        @include for-phone-only {
+          font-size: 20px;
+          letter-spacing: 1px;
+        }
+      }
+      p {
+        font-size: 16px;
+        max-width: 570px;
+        font-weight: 600;
+        line-height: 32px;
+        color: #d9d9d9;
+        @include for-phone-only {
+          font-size: 0.875rem;
+        }
+      }
+      .buttonContainer {
+        width: 100%;
+        @include for-phone-only{
+          text-align: center;
+        }
+        button {
+          font-size: 16px;
+          color: white;
+          background: #3F81FF;
+          padding: 2px 20px;
+          z-index: 1;
+          @include for-phone-only {
+            font-size: 14px;
+            width: 100%;
+            padding: 2px 5px;
+          }
+        }
+      }
+    }
+    svg{
+      position: absolute;
+      bottom: 0;
+    }
+    .videoContainer {
+      mat-card {
+        width: 90%;
+        padding: 0;
+        border-radius: 20px; z-index: 1;
+        @include for-phone-only {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .goalContainer {
+    text-align: center;
+    margin-top: 0.5rem;
+    @include for-phone-only {
+      margin-top: 3rem;
+      padding: 0 10px;
+    }
+    h3 {
+      font-size: 24px;
+      font-family: Arial, serif;
+      font-weight: bold;
+      color: #7A829B;
+      letter-spacing: 1px;
+      line-height: 24px;
+      margin-bottom: 0.725rem;
+      @include for-phone-only {
+        font-size: 18px;
+      }
+    }
+    .paragraphContainer {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      padding: 0 40px;
+      @include for-phone-only {
+        padding: 0 5px;
+      }
+      p{
+        margin: 0;
+        padding: 0;
+        color: #707070;
+        font-size: 17px;
+        font-family: Segoe UI, sans-serif;
+        font-weight: 500;
+        line-height: 30px;
+        max-width: 1000px;
+        @include for-phone-only {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  .footerContainer {
+    margin-top: 1.5rem;
+    text-align: center;
+    @include for-phone-only{
+      margin-top: 1.2rem;
+    }
+    span {
+      font-size: 18px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      line-height: 32px;
+      letter-spacing: 1px;
+      @include for-phone-only {
+        font-size: 16px;
+        letter-spacing: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+<div class="trainingContainer">
+  <div class="jumbotronContainer">
+    <div class="jumbotronDetails" fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutAlign="none center" fxLayoutGap="50px">
+      <div fxFlex.gt-sm="50">
+        <h1>Me Former Pour Entreprendre</h1>
+        <p>
+          Le but de cette formation est de pouvoir assimiler les différents aspects de l’entrepreneuriat,
+          Notamment les particularités
+          et les nuances dans les domaines juridiques, financiers,
+          digitaux et commerciaux auxquels tout entrepreneur
+          fait face en début de cycle de création.
+        </p>
+        <div class="buttonContainer">
+          <button mat-raised-button>
+            Télécharger le programme de formation
+          </button>
+        </div>
+      </div>
+      <div fxFlex.gt-sm="50" >
+        <div class="videoContainer" style="position: relative">
+          <mat-card style="margin-left: auto; margin-right: auto">
+            <vg-player style="border-radius: 20px">
+              <vg-overlay-play></vg-overlay-play>
+              <vg-buffering></vg-buffering>
+
+              <vg-scrub-bar>
+                <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+              </vg-scrub-bar>
+
+              <vg-controls>
+                <vg-play-pause></vg-play-pause>
+
+
+                <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+
+                <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+
+                <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
+
+                <vg-mute></vg-mute>
+                <vg-volume></vg-volume>
+
+                <vg-fullscreen></vg-fullscreen>
+              </vg-controls>
+
+              <video  [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" crossorigin>
+                <source src="/assets/videos/formation.mp4" type="video/mp4">
+              </video>
+            </vg-player>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1366 82"><defs><style>.cls-1{fill:#fff;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M0,0V82H1366V0A3734.36,3734.36,0,0,1,679,63,3734.22,3734.22,0,0,1,0,0Z"/></g></g></svg>
+  </div>
+  <div class="goalContainer">
+    <h3>OBJECTIF PÉDAGOGIQUE GLOBAL</h3>
+    <div class="paragraphContainer">
+      <p>A l’issue de la formation, Le stagiaire sera capable de maîtriser et de différencier tous les fondamentaux d’une creation d’entreprise, sur les aspects financiers, juridiques, et commerciaux afin de démarrer sa création d’entreprise avec les bases de connaissance nécessaires.</p>
+    </div>
+  </div>
+  <!-- Footer -->
+  <div class="footerContainer">
+    <span>© Tous les droits sont résérvés</span>
+  </div>
+</div>
+
