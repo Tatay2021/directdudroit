@@ -9,7 +9,7 @@
     background-color: #3239BB;
     min-height: 560px;
     .jumbotronDetails {
-      padding-top: 150px;
+      padding-top: 60px;
       padding-left: 100px;
       padding-right: 100px;
       color: white;
@@ -18,6 +18,7 @@
       @include for-phone-only {
         padding-left: 20px;
         padding-right: 20px;
+        padding-top: 50px;
       }
       h1 {
         font-size: 32px;

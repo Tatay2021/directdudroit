@@ -19,12 +19,17 @@ import {VgControlsModule} from '@videogular/ngx-videogular/controls';
 import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
 import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 import { TrainingComponent } from './Components/training/training.component';
+import {MatMenuModule} from '@angular/material/menu';
+import { NavComponent } from './Components/nav/nav.component';
+import { HomePageComponent } from './Components/home-page/home-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     TrainingComponent,
+    NavComponent,
+    HomePageComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +46,8 @@ import { TrainingComponent } from './Components/training/training.component';
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
-    VgBufferingModule
+    VgBufferingModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
