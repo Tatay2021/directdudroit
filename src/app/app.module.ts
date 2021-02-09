@@ -22,6 +22,9 @@ import { TrainingComponent } from './Components/training/training.component';
 import {MatMenuModule} from '@angular/material/menu';
 import { NavComponent } from './Components/nav/nav.component';
 import { HomePageComponent } from './Components/home-page/home-page.component';
+import { PoleTrainingComponent } from './Components/pole-training/pole-training.component';
+import {MatListModule} from '@angular/material/list';
+import { CreateEnterpriseComponent } from './Components/create-enterprise/create-enterprise.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,8 @@ import { HomePageComponent } from './Components/home-page/home-page.component';
     TrainingComponent,
     NavComponent,
     HomePageComponent,
+    PoleTrainingComponent,
+    CreateEnterpriseComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +52,8 @@ import { HomePageComponent } from './Components/home-page/home-page.component';
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
-    MatMenuModule
+    MatMenuModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

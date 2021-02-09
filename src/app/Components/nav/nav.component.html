@@ -6,21 +6,25 @@
       </div>
       <div class="routerButton" fxLayout="row" fxHide.lt-sm >
         <button mat-button routerLink="/">Accueil</button>
-        <button mat-button routerLink="/me-former-pour-entreprendre">Pole Formation</button>
+        <button mat-button [matMenuTriggerFor]="belowMenu" >Formation</button>
         <button mat-button routerLink="/" fragment="specialites">Spécialités</button>
         <button mat-button routerLink="/" fragment="notreVision">Notre Vision</button>
         <button mat-button routerLink="./" fragment="contact">Contact</button>
       </div>
     </div>
     <div class="startButton">
-      <button mat-raised-button>Commencer</button>
+      <button mat-raised-button routerLink="/enterprise">Commencer</button>
     </div>
   </mat-toolbar-row>
   <mat-toolbar-row fxHide.gt-xs style="width: 100vw!important;">
     <div  fxLayout="row" fxLayoutAlign="space-between" class="phoneToolBar">
       <button mat-button routerLink="/">Accueil</button>
-      <button mat-button routerLink="/me-former-pour-entreprendre">Pole Formation</button>
+      <button mat-button [matMenuTriggerFor]="belowMenu">Formation</button>
       <button mat-button routerLink="./" fragment="contact">Contact</button>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
+<mat-menu #belowMenu="matMenu" yPosition="below">
+  <button mat-menu-item  routerLink="/pole-formation">Pole Formation</button>
+  <button mat-menu-item  routerLink="/me-former-pour-entreprendre">Me Former Pour Entreprendre</button>
+</mat-menu>
