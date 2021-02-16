@@ -25,6 +25,11 @@ import { HomePageComponent } from './Components/home-page/home-page.component';
 import { PoleTrainingComponent } from './Components/pole-training/pole-training.component';
 import {MatListModule} from '@angular/material/list';
 import { CreateEnterpriseComponent } from './Components/create-enterprise/create-enterprise.component';
+import { IntroSplashComponent } from './Components/intro-splash/intro-splash.component';
+import { CreateEnterpriseQuestionsComponent } from './Components/create-enterprise-questions/create-enterprise-questions.component';
+import {FormsModule} from '@angular/forms';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -35,6 +40,8 @@ import { CreateEnterpriseComponent } from './Components/create-enterprise/create
     HomePageComponent,
     PoleTrainingComponent,
     CreateEnterpriseComponent,
+    IntroSplashComponent,
+    CreateEnterpriseQuestionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +60,10 @@ import { CreateEnterpriseComponent } from './Components/create-enterprise/create
     VgOverlayPlayModule,
     VgBufferingModule,
     MatMenuModule,
-    MatListModule
+    MatListModule,
+    FormsModule,
+    MatStepperModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

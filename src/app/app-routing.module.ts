@@ -5,6 +5,8 @@ import {TrainingComponent} from './Components/training/training.component';
 import {HomePageComponent} from './Components/home-page/home-page.component';
 import {PoleTrainingComponent} from './Components/pole-training/pole-training.component';
 import {CreateEnterpriseComponent} from './Components/create-enterprise/create-enterprise.component';
+import {IntroSplashComponent} from './Components/intro-splash/intro-splash.component';
+import {CreateEnterpriseQuestionsComponent} from './Components/create-enterprise-questions/create-enterprise-questions.component';
 const routerOptions: ExtraOptions = {
   initialNavigation: 'enabled',
   anchorScrolling: 'enabled',
@@ -25,7 +27,17 @@ const routes: Routes = [
   },
   {
     path: 'enterprise',
-    component: CreateEnterpriseComponent
+    component: CreateEnterpriseComponent,
+    children: [
+      {
+        path: '',
+        component: IntroSplashComponent
+      },
+      {
+        path: 'sas',
+        component: CreateEnterpriseQuestionsComponent
+      }
+    ]
   },
   {
     path: '**',

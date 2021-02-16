@@ -1,0 +1,26 @@
+
+.enterpriseContainer{
+  background-color: #F6F6FA;
+  height: 100%;
+  .enterpriseJumbotron {
+    position: relative;
+    min-height: 500px;
+    background-color: #3239BB;
+    svg{
+      position: absolute;
+      bottom: 0;
+    }
+  }
+  .questionsContainer {
+    margin-top: -20%;
+    background-color: #F6F6FA;
+    padding: 0 80px 80px 40px;
+    display: flex;
+    justify-content: center;
+    mat-card {
+      padding: 25px 25px 25px 25px;
+      max-width: 800px;
+      border-radius: 25px;
+    }
+  }
+}

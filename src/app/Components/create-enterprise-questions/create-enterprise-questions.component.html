@@ -1,0 +1,222 @@
+
+
+<mat-horizontal-stepper linear #stepper color="accent">
+  <mat-step>
+    <ng-template matStepLabel>Projet</ng-template>
+
+    <div class="secondStepper">
+      <mat-horizontal-stepper linear #secondStepper color="accent">
+        <!-- When you want to creat your Enterprise -->
+        <mat-step>
+          <ng-template matStepLabel>Date de création</ng-template>
+          <h3>Dans quel délai voulez-vous créer votre société?</h3>
+          <p>
+            Ces informations nous permettront de vous aider au cours de votre processus de création.
+          </p>
+          <div style="min-height: 250px;"
+               fxLayout="row wrap"
+               fxLayout.lt-sm="column"
+               fxLayoutGap="15px"
+               fxLayoutAlign="flex-start">
+            <ng-container *ngFor="let cardDuration of durationsOfCreation">
+              <div [ngClass]="{'active': cardDuration.active}"
+                   fxFlex="0 1 calc(50% - 15px)"
+                   fxFlex.lt-sm="100%"
+                   class="activityCard"
+                   (click)="clickDurationCard(cardDuration)"
+              >
+                {{cardDuration.name}}
+              </div>
+            </ng-container>
+          </div>
+          <div style="text-align: right;">
+            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button matStepperNext color="accent">Suivant</button>
+          </div>
+        </mat-step>
+        <!-- Enterprise Activity -->
+        <mat-step >
+          <ng-template matStepLabel>Activité</ng-template>
+          <h3>Quelle sera l'activité de votre société ?</h3>
+          <p>
+            L'activité indiquée servira de base à la rédaction de l'objet social.
+          </p>
+          <!-- Activity Card -->
+          <div style="min-height: 250px"
+               fxLayout="row wrap"
+               fxLayout.lt-sm="column"
+               fxLayoutGap="15px"
+               fxLayoutAlign="flex-start">
+            <ng-container *ngFor="let activity of companyActivitiesExample">
+              <div [ngClass]="{'active': activity.active}"
+                   fxFlex="0 1 calc(33.3% - 15px)"
+                   fxFlex.lt-md="0 1 calc(50% - 15px)"
+                   fxFlex.lt-sm="100%"
+                   class="activityCard"
+                   (click)="clickedCard(activity)"
+              >
+                {{activity.name}}
+              </div>
+            </ng-container>
+          </div>
+          <!-- Other Activity -->
+          <ng-container *ngIf="otherActivity">
+            <mat-form-field appearance="outline" color="accent" style="width: 98%; margin-bottom: -0.5rem;">
+              <mat-label>Quelle est votre activité ?</mat-label>
+              <input matInput placeholder="Ex: Restauration, VTC, WebDesigner ...">
+              <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+          </ng-container>
+          <div style="text-align: right">
+            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button matStepperNext color="accent">Suivant</button>
+          </div>
+        </mat-step>
+        <!-- The associates  -->
+        <mat-step>
+          <ng-template matStepLabel>Les associés</ng-template>
+          <h3>Qui sont les associés de votre société ?</h3>
+          <p>
+            Le 1er associé sera notre point de contact pour vous accompagner dans votre création.
+          </p>
+          <div class="formField">
+            <!-- Associate 1 -->
+            <!-- Associate List-->
+            <div *ngFor="let item of associates; let i = index">
+              <div style="padding-bottom: 7px">
+                <span class="formFiledTitle">Associé {{i + 1}}:</span>
+                <mat-radio-group [(ngModel)]="item.gender" aria-label="Select an option" style="margin-left: 25px">
+                  <mat-radio-button value="H">M.</mat-radio-button>
+                  <mat-radio-button value="F">Mme</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field appearance="outline" color="accent">
+                  <mat-label>Nom</mat-label>
+                  <input matInput [(ngModel)]="item.name" (keypress)="fillAssociates()" required>
+                  <mat-icon matSuffix>account_circle</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline" color="accent">
+                  <mat-label>Prénom</mat-label>
+                  <input matInput [(ngModel)]="item.lastName" (keypress)="fillAssociates()" required>
+                  <mat-icon matSuffix>account_circle</mat-icon>
+                </mat-form-field>
+              </div>
+              <ng-container *ngIf="i === 0">
+                <div>
+                  <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Adresse mail</mat-label>
+                    <input matInput placeholder="exemple@exemple.com" required>
+                    <mat-icon matSuffix>email</mat-icon>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="i === 0">
+                <div>
+                  <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Téléphone</mat-label>
+                    <input matInput placeholder="+49 359 875 *** ***" required>
+                    <mat-icon matSuffix>phone</mat-icon>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+            </div>
+            <!-- Add Associate Button-->
+            <div>
+              <button mat-flat-button (click)="addAssociate()">
+                <mat-icon color="primary">add</mat-icon>
+                <span style="color: #3239BB">Ajouter un associé</span>
+              </button>
+              <button *ngIf="associates.length > 0" mat-flat-button (click)="associates.splice(-1,1)">
+                <mat-icon color="accent">remove</mat-icon>
+                <span style="color: #FF6584">Supprimer un associé</span>
+              </button>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button matStepperNext [disabled]="nextButton" color="accent">Suivant</button>
+          </div>
+        </mat-step>
+        <!-- Who'll be the president -->
+        <mat-step>
+          <ng-template matStepLabel>Président</ng-template>
+          <h3> Qui sera le président ?</h3>
+          <p>Choisissez le président dans la liste des associés</p>
+          <div style="min-height: 250px;"
+               fxLayout="row wrap"
+               fxLayout.lt-sm="column"
+               fxLayoutGap="15px"
+               fxLayoutAlign="flex-start">
+            <ng-container *ngFor="let item of associates">
+              <div [ngClass]="{'active': item.active}"
+                   fxFlex="0 1 calc(50% - 15px)"
+                   fxFlex.lt-sm="100%"
+                   class="activityCard"
+                   (click)="clickDurationCard(item)"
+              >
+                {{item.name}} {{item.lastName}}
+              </div>
+            </ng-container>
+          </div>
+          <div style="text-align: right;">
+            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button (click)="goForward(stepper)" color="accent">Suivant</button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </mat-step>
+
+
+
+
+
+
+
+
+  <mat-step>
+    <ng-template matStepLabel>Servives</ng-template>
+    <div>
+      <section class="example-section">
+        <mat-radio-group [(ngModel)]="labelPosition">
+          <mat-radio-button class="example-margin" value="after">Gérant</mat-radio-button>
+          <mat-radio-button class="example-margin" value="before">Co-Gérant</mat-radio-button>
+        </mat-radio-group>
+      </section>
+    </div>
+    <div style="text-align: right">
+      <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+      <button mat-raised-button matStepperNext color="accent">Suivant</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Commande</ng-template>
+    <ng-container *ngIf="labelPosition === 'after'">
+      Vous étes Gérant remplir....
+    </ng-container>
+    <ng-container *ngIf="labelPosition === 'before'">
+      Vous étes Co-Gérant remplir formulaire....
+    </ng-container>
+    <div style="text-align: right">
+      <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+      <button mat-raised-button matStepperNext color="accent">Suivant</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Dossier Juridique</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Validation</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

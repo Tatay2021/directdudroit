@@ -1,0 +1,59 @@
+::ng-deep .mat-horizontal-content-container {
+  padding: 2px 12px!important;
+}
+.secondStepper {
+  ::ng-deep .mat-horizontal-stepper-header-container {
+    display: none !important;
+  }
+
+  h3 {
+    font-size: large;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 26px;
+    margin-bottom: 5px;
+  }
+  p {
+    text-align: center;
+    line-height: 26px;
+    margin-bottom: 20px;
+  }
+  .formField {
+    .formFiledTitle {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 26px;
+    }
+  }
+}
+.activityCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e91e63;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 10px;
+}
+.activityCard:hover {
+  background-color: rgba(233,30,99,.7);
+  color: #fff;
+  cursor: pointer;
+}
+.active {
+  background-color: rgba(233,30,99,.7);
+  color: #fff;
+}
+mat-form-field {
+  width: 100%;
+}
+mat-radio-group {
+  margin-left: 25px;
+}
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+.mat-focused .mat-icon {
+  color: #e91e63;
+}
