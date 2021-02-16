@@ -30,7 +30,6 @@
             </ng-container>
           </div>
           <div style="text-align: right;">
-            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
             <button mat-raised-button matStepperNext color="accent">Suivant</button>
           </div>
         </mat-step>
@@ -80,7 +79,6 @@
             Le 1er associé sera notre point de contact pour vous accompagner dans votre création.
           </p>
           <div class="formField">
-            <!-- Associate 1 -->
             <!-- Associate List-->
             <div *ngFor="let item of associates; let i = index">
               <div style="padding-bottom: 7px">
@@ -135,7 +133,7 @@
           </div>
           <div style="text-align: right;">
             <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
-            <button mat-raised-button matStepperNext [disabled]="nextButton" color="accent">Suivant</button>
+            <button mat-raised-button matStepperNext  color="accent">Suivant</button>
           </div>
         </mat-step>
         <!-- Who'll be the president -->
@@ -150,15 +148,111 @@
                fxLayoutAlign="flex-start">
             <ng-container *ngFor="let item of associates">
               <div [ngClass]="{'active': item.active}"
-                   fxFlex="0 1 calc(50% - 15px)"
+                   fxFlex="0 1 calc(33.33% - 15px)"
+                   fxFlex.lt-md="0 1 calc(50% - 15px)"
                    fxFlex.lt-sm="100%"
                    class="activityCard"
-                   (click)="clickDurationCard(item)"
+                   (click)="presidentCardStyle(item)"
               >
                 {{item.name}} {{item.lastName}}
               </div>
             </ng-container>
+            <div [ngClass]="{'active': nonAssociatePresident}"
+                 fxFlex="0 1 calc(33.33% - 15px)"
+                 fxFlex.lt-md="0 1 calc(50% - 15px)"
+                 fxFlex.lt-sm="100%"
+                 class="activityCard"
+                 (click)="anotherPresidentStyle()"
+            >
+              Autre
+            </div>
           </div>
+          <ng-container *ngIf="nonAssociatePresident">
+            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="8px" fxLayoutAlign="space-between">
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>Nom</mat-label>
+                <input matInput required>
+                <mat-icon matSuffix>account_circle</mat-icon>
+              </mat-form-field>
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>Prénom</mat-label>
+                <input matInput required>
+                <mat-icon matSuffix>account_circle</mat-icon>
+              </mat-form-field>
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>Email</mat-label>
+                <input matInput required>
+                <mat-icon matSuffix>mail</mat-icon>
+              </mat-form-field>
+            </div>
+          </ng-container>
+          <!-- Mat Step Buttons -->
+          <div style="text-align: right;">
+            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button matStepperNext color="accent">Suivant</button>
+          </div>
+        </mat-step>
+
+        <!-- General Director -->
+        <mat-step>
+          <ng-template matStepLabel>Directeur Général</ng-template>
+          <h3>Souhaitez-vous nommer un directeur général ?</h3>
+          <p>
+            Le directeur général dirige la société aux côtés du président.
+          </p>
+          <div style="min-height: 250px;"
+               fxLayout="row wrap"
+               fxLayout.lt-sm="column"
+               fxLayoutGap="15px"
+               fxLayoutAlign="flex-start">
+            <div [ngClass]="{'active': isGeneralDirector === 'yes'}"
+                 fxFlex="0 1 calc(50% - 15px)"
+                 fxFlex.lt-md="0 1 calc(50% - 15px)"
+                 fxFlex.lt-sm="100%"
+                 class="activityCard"
+                 (click)="isGeneralDirector = 'yes'"
+            >
+              Yes
+            </div>
+            <div [ngClass]="{'active': isGeneralDirector === 'no'}"
+                 fxFlex="0 1 calc(50% - 15px)"
+                 fxFlex.lt-md="0 1 calc(50% - 15px)"
+                 fxFlex.lt-sm="100%"
+                 class="activityCard"
+                 (click)="isGeneralDirector = 'no'"
+            >
+              <span>No </span> <span style="font-weight: 400; font-size: 0.875rem;padding-left: 5px"> 65% des utilisateurs</span>
+            </div>
+          </div>
+          <ng-container *ngIf="isGeneralDirector ==='yes'">
+            <h3 style="padding-top: 25px">Qui sera directeur général ?</h3>
+            <div style="min-height: 250px;"
+                 fxLayout="row wrap"
+                 fxLayout.lt-sm="column"
+                 fxLayoutGap="15px"
+                 fxLayoutAlign="flex-start">
+              <ng-container *ngFor="let associate of associates">
+                <div [ngClass]="{'active': associate.generalDirector}"
+                     fxFlex="0 1 calc(33.33% - 15px)"
+                     fxFlex.lt-md="0 1 calc(50% - 15px)"
+                     fxFlex.lt-sm="100%"
+                     class="activityCard"
+                     (click)="generalDirector(associate)"
+                >
+                  {{associate.name}} {{associate.lastName}}
+                </div>
+              </ng-container>
+              <div [ngClass]="{'active': isAnotherGeneralDirector}"
+                   fxFlex="0 1 calc(33.33% - 15px)"
+                   fxFlex.lt-md="0 1 calc(50% - 15px)"
+                   fxFlex.lt-sm="100%"
+                   class="activityCard"
+                   (click)="generalDirector(false)"
+              >
+                Autre
+              </div>
+            </div>
+          </ng-container>
           <div style="text-align: right;">
             <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
             <button mat-raised-button (click)="goForward(stepper)" color="accent">Suivant</button>

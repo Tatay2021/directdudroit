@@ -14,7 +14,8 @@ class Associate {
   name!: string;
   lastName!: string;
   gender!: string;
-  active = false;
+  active!: boolean;
+  generalDirector!: boolean;
 }
 @Component({
   selector: 'app-create-enterprise-questions',
@@ -50,6 +51,10 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
   nextButton = true;
   // Associate
   associates: [Associate];
+  // General Director
+  isGeneralDirector: 'yes' | 'no' = 'no';
+  isAnotherGeneralDirector = false;
+  nonAssociatePresident = false;
   constructor() {
     this.associates = [new Associate()];
     this.associates.push(new Associate());
@@ -70,6 +75,24 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
       this.otherActivity = true;
     }
     console.log(this.otherActivityType);
+  }
+  presidentCardStyle(president: Associate): void {
+    this.nonAssociatePresident = false;
+    this.associates.forEach(item => item.active = false);
+    president.active = true;
+  }
+  anotherPresidentStyle(): void {
+    this.associates.forEach(item => item.active = false);
+    this.nonAssociatePresident = true;
+  }
+  generalDirector(director: any): void {
+    this.isAnotherGeneralDirector = false;
+    this.associates.forEach(item => item.generalDirector = false);
+    if (director instanceof Associate) {
+      director.generalDirector = true;
+    } else {
+      this.isAnotherGeneralDirector = true;
+    }
   }
   // Add Associate to List
   addAssociate(): void {

@@ -12,12 +12,13 @@
     }
   }
   .questionsContainer {
-    margin-top: -20%;
+    margin-top: -22%;
     background-color: #F6F6FA;
     padding: 0 80px 80px 40px;
     display: flex;
     justify-content: center;
     mat-card {
+      width: 100%;
       padding: 25px 25px 25px 25px;
       max-width: 800px;
       border-radius: 25px;
