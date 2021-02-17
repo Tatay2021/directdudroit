@@ -2,8 +2,7 @@
 
 <mat-horizontal-stepper linear #stepper color="accent">
   <mat-step>
-    <ng-template matStepLabel>Projet</ng-template>
-
+    <ng-template matStepLabel >Projet</ng-template>
     <div class="secondStepper">
       <mat-horizontal-stepper linear #secondStepper color="accent">
         <!-- When you want to creat your Enterprise -->
@@ -88,15 +87,15 @@
                   <mat-radio-button value="F">Mme</mat-radio-button>
                 </mat-radio-group>
               </div>
-              <div fxLayout="row" fxLayoutGap="10px">
+              <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="10px">
                 <mat-form-field appearance="outline" color="accent">
                   <mat-label>Nom</mat-label>
-                  <input matInput [(ngModel)]="item.name" (keypress)="fillAssociates()" required>
+                  <input matInput [(ngModel)]="item.name" (keyup)="fillAssociates()" required>
                   <mat-icon matSuffix>account_circle</mat-icon>
                 </mat-form-field>
                 <mat-form-field appearance="outline" color="accent">
                   <mat-label>Prénom</mat-label>
-                  <input matInput [(ngModel)]="item.lastName" (keypress)="fillAssociates()" required>
+                  <input matInput [(ngModel)]="item.lastName" (keyup)="fillAssociates()" required>
                   <mat-icon matSuffix>account_circle</mat-icon>
                 </mat-form-field>
               </div>
@@ -133,7 +132,7 @@
           </div>
           <div style="text-align: right;">
             <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
-            <button mat-raised-button matStepperNext  color="accent">Suivant</button>
+            <button mat-raised-button matStepperNext [disabled]="nextButton"  color="accent">Suivant</button>
           </div>
         </mat-step>
         <!-- Who'll be the president -->
@@ -168,7 +167,7 @@
             </div>
           </div>
           <ng-container *ngIf="nonAssociatePresident">
-            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="8px" fxLayoutAlign="space-between">
+            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="8px" fxLayoutAlign="space-between">
               <mat-form-field appearance="outline" color="accent">
                 <mat-label>Nom</mat-label>
                 <input matInput required>
@@ -212,7 +211,7 @@
                  class="activityCard"
                  (click)="isGeneralDirector = 'yes'"
             >
-              Yes
+              Oui
             </div>
             <div [ngClass]="{'active': isGeneralDirector === 'no'}"
                  fxFlex="0 1 calc(50% - 15px)"
@@ -221,7 +220,7 @@
                  class="activityCard"
                  (click)="isGeneralDirector = 'no'"
             >
-              <span>No </span> <span style="font-weight: 400; font-size: 0.875rem;padding-left: 5px"> 65% des utilisateurs</span>
+              <span>Non </span> <span style="font-weight: 400; font-size: 0.875rem;padding-left: 5px"> 65% des utilisateurs</span>
             </div>
           </div>
           <ng-container *ngIf="isGeneralDirector ==='yes'">
@@ -252,10 +251,74 @@
                 Autre
               </div>
             </div>
+            <!-- Director Type-->
+            <ng-container *ngIf="isAnotherGeneralDirector">
+              <span style="padding-top: 30px; font-weight: 500">Qui est le directeur général ?</span>
+              <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="8px" fxLayoutAlign="space-between ">
+                <mat-form-field appearance="outline" color="accent">
+                  <mat-label>Nom</mat-label>
+                  <input matInput >
+                  <mat-icon matSuffix>account_circle</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline" color="accent">
+                  <mat-label>Prénom</mat-label>
+                  <input matInput >
+                  <mat-icon matSuffix>account_circle</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline" color="accent">
+                  <mat-label>Email</mat-label>
+                  <input matInput >
+                  <mat-icon matSuffix>mail</mat-icon>
+                </mat-form-field>
+              </div>
+            </ng-container>
+          </ng-container>
+
+          <div style="text-align: right;">
+            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button matStepperNext color="accent">Suivant</button>
+          </div>
+        </mat-step>
+        <!-- Capital -->
+        <mat-step>
+          <h3>Quel est le montant du capital de votre société ?</h3>
+          <p>La majorité des entrepreneurs déposent entre 100€ et 10 000€ pour créer une SAS (montant minimum de 1€).</p>
+          <ng-container *ngIf="associates.length > 0">
+            <div *ngFor="let associate of associates; let i = index"
+              fxLayout.gt-sm="row"
+              fxLayout.lt-md="column"
+              fxLayoutAlign.gt-sm=" center"
+              fxLayoutGap.gt-sm="10px">
+              <div fxFlex.gt-sm="50">
+                <span style="font-weight: bold">Associé {{i + 1}}: </span>
+                <span style="text-transform: capitalize; padding-left: 5px"> {{associate.lastName}} {{associate.name}}</span>
+              </div>
+              <mat-form-field appearance="outline" color="accent" fxFlex.gt-sm="25">
+                <input type="number" matInput required [(ngModel)]="associate.depositMoney" (keyup)="calcPercentage()">
+                <mat-icon matSuffix>euro_symbol</mat-icon>
+              </mat-form-field>
+              <mat-form-field appearance="outline" color="accent" fxFlex.gt-sm="25">
+                <mat-label>Pourcentage</mat-label>
+                <input matInput disabled [(ngModel)]="associate.percentage">
+                <mat-icon matSuffix>%</mat-icon>
+              </mat-form-field>
+            </div>
+            <div style="text-transform: uppercase; font-size: 0.875rem; font-weight: 500; padding-top: 20px"
+              fxLayout.gt-sm="row"
+              fxLayout.lt-md="column"
+              fxLayoutGap.gt-sm="10px"
+              fxLayoutAlign=" center">
+              <div fxFlex="50">
+                <span >Montant du capital</span>
+              </div>
+              <div fxFlex="50">
+                {{calcSum() || 0}} €
+              </div>
+            </div>
           </ng-container>
           <div style="text-align: right;">
             <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
-            <button mat-raised-button (click)="goForward(stepper)" color="accent">Suivant</button>
+            <button mat-raised-button matStepperNext color="accent">Suivant</button>
           </div>
         </mat-step>
       </mat-horizontal-stepper>
@@ -271,14 +334,6 @@
 
   <mat-step>
     <ng-template matStepLabel>Servives</ng-template>
-    <div>
-      <section class="example-section">
-        <mat-radio-group [(ngModel)]="labelPosition">
-          <mat-radio-button class="example-margin" value="after">Gérant</mat-radio-button>
-          <mat-radio-button class="example-margin" value="before">Co-Gérant</mat-radio-button>
-        </mat-radio-group>
-      </section>
-    </div>
     <div style="text-align: right">
       <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
       <button mat-raised-button matStepperNext color="accent">Suivant</button>
@@ -286,12 +341,6 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Commande</ng-template>
-    <ng-container *ngIf="labelPosition === 'after'">
-      Vous étes Gérant remplir....
-    </ng-container>
-    <ng-container *ngIf="labelPosition === 'before'">
-      Vous étes Co-Gérant remplir formulaire....
-    </ng-container>
     <div style="text-align: right">
       <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
       <button mat-raised-button matStepperNext color="accent">Suivant</button>

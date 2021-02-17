@@ -1,3 +1,9 @@
+@mixin for-phone-only{
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+
 ::ng-deep .mat-horizontal-content-container {
   padding: 2px 12px!important;
 }
@@ -44,9 +50,10 @@ mat-horizontal-stepper {
   letter-spacing: 1px;
 }
 .activityCard:hover {
-  background-color: rgba(233,30,99,.7);
-  color: #fff;
+  transform: translateY(-7px);
   cursor: pointer;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in;
 }
 .active {
   background-color: rgba(233,30,99,.7);
@@ -54,6 +61,7 @@ mat-horizontal-stepper {
 }
 mat-form-field {
   width: 100%;
+  margin-bottom: -0.925rem;
 }
 mat-radio-group {
   margin-left: 25px;

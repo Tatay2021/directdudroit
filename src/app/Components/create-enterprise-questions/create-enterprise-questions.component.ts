@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatStep, MatStepper} from '@angular/material/stepper';
 interface CompanyActivities {
   name: string;
@@ -16,14 +15,19 @@ class Associate {
   gender!: string;
   active!: boolean;
   generalDirector!: boolean;
+  depositMoney!: number;
+  percentage!: number;
+  constructor() {
+  }
 }
+
 @Component({
   selector: 'app-create-enterprise-questions',
   templateUrl: './create-enterprise-questions.component.html',
   styleUrls: ['./create-enterprise-questions.component.scss']
 })
 export class CreateEnterpriseQuestionsComponent implements OnInit {
-  labelPosition: 'before' | 'after' = 'after';
+
   // Duration
   // @ts-ignore
   durationsOfCreation: [DurationOfCreation] = [
@@ -34,7 +38,7 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
   ];
   // Company Activity
   otherActivity = false;
-  otherActivityType: string | undefined;
+  otherActivityType!: string;
   // @ts-ignore
   companyActivitiesExample: [CompanyActivities] = [
     {name: 'Restauration', iconPath: '', active: false},
@@ -97,7 +101,16 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
   // Add Associate to List
   addAssociate(): void {
     this.associates.push(new Associate());
-    console.log(this.associates);
+  }
+
+  // capitalSum
+  calcSum(): number {
+    let sum = 0;
+    this.associates.forEach(item => sum += item.depositMoney);
+    return sum;
+  }
+  calcPercentage(): void {
+    this.associates.forEach(item => item.percentage = (item.depositMoney * 100) / this.calcSum());
   }
   // Stepper Movement Config
   goForward(stepper: MatStepper): void {
