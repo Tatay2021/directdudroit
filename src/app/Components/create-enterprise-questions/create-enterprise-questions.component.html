@@ -132,9 +132,24 @@
           </div>
           <div style="text-align: right;">
             <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
-            <button mat-raised-button matStepperNext [disabled]="nextButton"  color="accent">Suivant</button>
+            <button mat-raised-button (click)="goForward(stepper)" [disabled]="nextButton" color="accent">Suivant</button>
           </div>
         </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </mat-step>
+
+
+
+
+
+
+
+
+  <mat-step>
+    <ng-template matStepLabel>Informations</ng-template>
+    <div class="secondStepper">
+      <mat-horizontal-stepper linear #thirdStepper color="accent">
         <!-- Who'll be the president -->
         <mat-step>
           <ng-template matStepLabel>Président</ng-template>
@@ -191,7 +206,6 @@
             <button mat-raised-button matStepperNext color="accent">Suivant</button>
           </div>
         </mat-step>
-
         <!-- General Director -->
         <mat-step>
           <ng-template matStepLabel>Directeur Général</ng-template>
@@ -285,10 +299,10 @@
           <p>La majorité des entrepreneurs déposent entre 100€ et 10 000€ pour créer une SAS (montant minimum de 1€).</p>
           <ng-container *ngIf="associates.length > 0">
             <div *ngFor="let associate of associates; let i = index"
-              fxLayout.gt-sm="row"
-              fxLayout.lt-md="column"
-              fxLayoutAlign.gt-sm=" center"
-              fxLayoutGap.gt-sm="10px">
+                 fxLayout.gt-sm="row"
+                 fxLayout.lt-md="column"
+                 fxLayoutAlign.gt-sm=" center"
+                 fxLayoutGap.gt-sm="10px">
               <div fxFlex.gt-sm="50">
                 <span style="font-weight: bold">Associé {{i + 1}}: </span>
                 <span style="text-transform: capitalize; padding-left: 5px"> {{associate.lastName}} {{associate.name}}</span>
@@ -304,10 +318,10 @@
               </mat-form-field>
             </div>
             <div style="text-transform: uppercase; font-size: 0.875rem; font-weight: 500; padding-top: 20px"
-              fxLayout.gt-sm="row"
-              fxLayout.lt-md="column"
-              fxLayoutGap.gt-sm="10px"
-              fxLayoutAlign=" center">
+                 fxLayout.gt-sm="row"
+                 fxLayout.lt-md="column"
+                 fxLayoutGap.gt-sm="10px"
+                 fxLayoutAlign=" center">
               <div fxFlex="50">
                 <span >Montant du capital</span>
               </div>
@@ -321,22 +335,97 @@
             <button mat-raised-button matStepperNext color="accent">Suivant</button>
           </div>
         </mat-step>
+        <!-- Company premises -->
+        <mat-step>
+          <h3>Où sera le siège social de votre société ?</h3>
+          <p>Le siège correspond à l'adresse administrative. Vous y recevrez vos courriers officiels.</p>
+          <div fxLayout.gt-sm="row wrap" fxLayout.lt-md="column" fxLayoutGap.gt-sm="15px" fxLayoutGap.lt-md="10px">
+            <div *ngFor="let item of companyPremise"
+                 fxFlex="0 1 calc(33.33% - 15px)"
+                 class="activityCard"
+                 [ngClass]="{'active': item.active}"
+                 (click)="chooseCompanyPremise(item)">
+              <span style="font-size: 0.825rem; font-weight: normal; min-height: 55px">{{item.description}}</span>
+            </div>
+          </div>
+          <div style="text-align: right">
+            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button matStepperNext color="accent">Suivant</button>
+          </div>
+        </mat-step>
+        <!-- Enterprise name -->
+        <mat-step>
+          <h3>Connaissez-vous déjà le nom de votre société ?</h3>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>Nom de votre entreprise</mat-label>
+            <input matInput>
+            <mat-icon matSuffix>apartment</mat-icon>
+          </mat-form-field>
+          <div style="text-align: center; padding-top: 15px">
+            <span style="font-size: 0.775rem; font-weight: lighter">Vous pourrez modifier le nom plus tard.</span>
+          </div>
+          <div style="text-align: right">
+            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button matStepperNext color="accent">Suivant</button>
+          </div>
+        </mat-step>
+        <!-- Bank account -->
+        <mat-step>
+          <h3>Dans quelle banque voulez-vous déposer le capital ?</h3>
+          <p>
+            Il est obligatoire d'ouvrir un compte bancaire dédié à la société.
+          </p>
+          <div
+            fxLayout="row wrap"
+            fxLayout.lt-md="column"
+            fxLayoutGap="15px"
+            fxLayoutGap.lt-md="10px">
+            <div *ngFor="let item of bankDetails"
+                 fxFlex="0 1 calc(33.33% - 15px)"
+                 class="activityCard"
+                 [ngClass]="{'active': item.active}"
+                 (click)="chooseBank(item)">
+              <span style="font-size: 0.825rem; font-weight: normal; min-height: 55px">{{item.description}}</span>
+            </div>
+          </div>
+          <!-- BNP Customer -->
+          <ng-container *ngIf="bnpBank">
+            <span class="formFiledTitle">Êtes-vous déjà client BNP Paribas?: </span>
+            <mat-radio-group [(ngModel)]="bnpCustomer" class="radioGroup">
+              <mat-radio-button value="oui">Oui</mat-radio-button>
+              <mat-radio-button value="non">Non</mat-radio-button>
+            </mat-radio-group>
+            <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="10px" style="padding-top: 15px">
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>Numéro de contact</mat-label>
+                <input matInput>
+                <mat-icon matSuffix></mat-icon>
+              </mat-form-field>
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>Choisir une date</mat-label>
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>À quelle heure ?</mat-label>
+                <mat-select>
+                  <mat-option value="morning">
+                    9h - 12h
+                  </mat-option>
+                  <mat-option value="evening">
+                    14h - 17h
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </ng-container>
+          <div style="text-align: right">
+            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button matStepperNext color="accent">Suivant</button>
+          </div>
+        </mat-step>
       </mat-horizontal-stepper>
-    </div>
-  </mat-step>
-
-
-
-
-
-
-
-
-  <mat-step>
-    <ng-template matStepLabel>Servives</ng-template>
-    <div style="text-align: right">
-      <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
-      <button mat-raised-button matStepperNext color="accent">Suivant</button>
     </div>
   </mat-step>
   <mat-step>

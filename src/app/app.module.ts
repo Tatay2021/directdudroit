@@ -30,6 +30,9 @@ import { CreateEnterpriseQuestionsComponent } from './Components/create-enterpri
 import {FormsModule} from '@angular/forms';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MAT_DATE_LOCALE, MatNativeDateModule, MatOptionModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -63,7 +66,11 @@ import {MatRadioModule} from '@angular/material/radio';
     MatListModule,
     FormsModule,
     MatStepperModule,
-    MatRadioModule
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatOptionModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

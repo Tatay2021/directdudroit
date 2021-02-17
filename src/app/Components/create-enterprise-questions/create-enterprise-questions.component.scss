@@ -28,12 +28,10 @@ mat-horizontal-stepper {
     line-height: 26px;
     margin-bottom: 20px;
   }
-  .formField {
-    .formFiledTitle {
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 26px;
-    }
+  .formFiledTitle {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 26px;
   }
 }
 .activityCard {
@@ -65,9 +63,17 @@ mat-form-field {
 }
 mat-radio-group {
   margin-left: 25px;
+  @include for-phone-only {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 0 10px 0;
+  }
 }
 .mat-radio-button ~ .mat-radio-button {
   margin-left: 16px;
+  @include for-phone-only {
+    margin: 0;
+  }
 }
 .mat-focused .mat-icon {
   color: #e91e63;
