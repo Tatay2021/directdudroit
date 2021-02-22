@@ -1,5 +1,7 @@
-import {Associate} from './Associate';
+import {AssociateE} from './AssociateE';
 import {EnterpriseBankAccount} from './EnterpriseBankAccount';
+import {AnotherDirector} from './AnotherDirector';
+import {GeneralDirector} from './GeneralDirector';
 
 export class Enterprise {
   // tslint:disable-next-line:variable-name
@@ -9,10 +11,19 @@ export class Enterprise {
   enterpriseActivity!: string;
   socialObject!: string;
   capital!: number;
-  associates!: [Associate];
+  email!: string;
+  phoneNumber!: number;
+  createTime!: string;
+  associates!: [AssociateE];
   bankAccountType!: EnterpriseBankAccount;
+  activity!: string;
+  anotherDirector!: AnotherDirector;
+  generalDirector!: GeneralDirector;
   constructor() {
     this.bankAccountType = new EnterpriseBankAccount();
-    this.associates =  [new Associate()];
+    // @ts-ignore
+    this.associates = [];
+    this.anotherDirector = new AnotherDirector();
+    this.generalDirector = new GeneralDirector();
   }
 }

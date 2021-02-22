@@ -7,6 +7,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 // @ts-ignore
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {Enterprise} from '../../Models/Enterprise';
+import {AssociateE} from '../../Models/AssociateE';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 interface CompanyActivities {
   name: string;
@@ -52,6 +53,7 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
   // Company Activity
   otherActivity = false;
   otherActivityType!: string;
+  otherActivityDef!: string;
   // @ts-ignore
   companyActivitiesExample: [CompanyActivities] = [
     {name: 'Restauration', iconPath: '', active: false},
@@ -66,12 +68,14 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
   ];
   // President
   nextButton = true;
-  // Associate
+  // AssociateE
   associates: [Associate];
   // General Director
   isGeneralDirector: 'yes' | 'no' = 'no';
   isAnotherGeneralDirector = false;
   nonAssociatePresident = false;
+  // Address
+  companyAllowedAddress!: boolean;
   // BankDetails
   // @ts-ignore
   bankDetails: [BankAccount] = [
@@ -101,6 +105,8 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
   clickDurationCard(cardDuration: DurationOfCreation): void {
     this.durationsOfCreation.forEach(item => item.active = false);
     cardDuration.active = true;
+    console.log(cardDuration);
+    this.enterprise.createTime = cardDuration.name;
   }
   clickedCard(activity: CompanyActivities): void {
     this.otherActivity = false;
@@ -109,7 +115,13 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
     if (this.companyActivitiesExample[this.companyActivitiesExample.length - 1] === activity) {
       this.otherActivity = true;
     }
+    console.log(activity);
     console.log(this.otherActivityType);
+    if (activity.name !== 'Autre...') {
+      this.enterprise.activity = activity.name;
+    } else {
+      this.enterprise.activity = this.otherActivityDef;
+    }
   }
   presidentCardStyle(president: Associate): void {
     this.nonAssociatePresident = false;
@@ -136,17 +148,22 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
     if (bankAccount === this.bankDetails.find(item => item.logo === 'bnp')) {
       this.bnpBank = true;
     }
+    this.enterprise.bankAccountType.name = bankAccount.description;
   }
   chooseCompanyPremise(premise: CompanyPremises): void {
+    this.companyAllowedAddress = false;
     this.companyPremise.forEach(item => item.active = false);
     premise.active = true;
+    if (premise.name !== 'ddr' && premise.name !== 'pr'){
+      this.companyAllowedAddress = true;
+    }
   }
   // controls
   checkIfSelected(): boolean {
     return this.companyActivitiesExample.some(item => item.active);
   }
 
-  // Add Associate to List
+  // Add AssociateE to List
   addAssociate(): void {
     this.associates.push(new Associate());
     console.log(this.associates.length);
@@ -172,14 +189,28 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
   fillAssociates(): void {
     this.nextButton = !!this.associates.find(item => !item.name || !item.lastName);
   }
+  fillEnterprise(): void {
+    this.enterprise = new Enterprise();
+    this.associates.forEach(item => {
+      const associateE = new AssociateE();
+      associateE.firstName = item.name;
+      associateE.lastName = item.lastName;
+      associateE.gender = item.gender;
+      associateE.depositMoney = item.depositMoney;
+      associateE.percentage = item.percentage;
+      associateE.isGeneralDirector = item.generalDirector;
+      this.enterprise.associates.push(associateE);
+    });
+  }
   // PDF Generator
+
   getAssociates(step: number): [string] {
     let tab: [string];
     // @ts-ignore
     tab = [];
     if (step === 1) {
       this.associates.forEach(item => {
-        tab.push(item.name + ' ' + item.lastName + ' né le 03/07/1996.');
+        tab.push(item.name + ' ' + item.lastName);
       });
     } else if (step === 2) {
       this.associates.forEach(item => {
@@ -203,7 +234,7 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
     let tab: [{width: string, text: string, color: string}];
     // @ts-ignore
     tab = [];
-    this.associates.forEach(item => tab.push({width: '30%', text: item.lastName + ' ' + item.lastName, color: 'red'}));
+    this.associates.forEach(item => tab.push({width: '30%', text: item.lastName + ' ' + item.name, color: 'red'}));
     console.log(tab);
     return tab;
   }
@@ -219,7 +250,7 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
           style: ['companyNameAndAddress', 'centerAlignment']
         },
         {
-          text: '17 rue el Quods 2070',
+          text: this.enterprise.address,
           style: ['centerAlignment', 'marginTop']
         },
         {

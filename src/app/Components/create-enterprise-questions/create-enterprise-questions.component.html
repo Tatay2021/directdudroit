@@ -5,10 +5,6 @@
     <ng-template matStepLabel >Projet</ng-template>
     <div class="secondStepper">
       <mat-horizontal-stepper linear #secondStepper color="accent">
-        <!-- PDF Generator -->
-        <mat-step>
-          <button mat-raised-button color="accent" (click)="generatePdf()">Generate</button>
-        </mat-step>
         <!-- When you want to creat your Enterprise -->
         <mat-step>
           <ng-template matStepLabel>Date de création</ng-template>
@@ -65,7 +61,7 @@
           <ng-container *ngIf="otherActivity">
             <mat-form-field appearance="outline" color="accent" style="width: 98%; margin-bottom: -0.5rem;">
               <mat-label>Quelle est votre activité ?</mat-label>
-              <input matInput placeholder="Ex: Restauration, VTC, WebDesigner ...">
+              <input matInput [(ngModel)]="otherActivityDef" placeholder="Ex: Restauration, VTC, WebDesigner ...">
               <mat-icon matPrefix>search</mat-icon>
             </mat-form-field>
           </ng-container>
@@ -73,7 +69,7 @@
             <h3 style="padding-top: 15px">Quelle est votre objet sociale?</h3>
             <mat-form-field appearance="outline" color="accent">
               <mat-label>Objet sociale</mat-label>
-              <input matInput>
+              <input matInput [(ngModel)]="enterprise.socialObject">
               <mat-icon matSuffix>emoji_objects</mat-icon>
             </mat-form-field>
           </ng-container>
@@ -90,7 +86,7 @@
             Le 1er associé sera notre point de contact pour vous accompagner dans votre création.
           </p>
           <div class="formField">
-            <!-- Associate List-->
+            <!-- AssociateE List-->
             <div *ngFor="let item of associates; let i = index">
               <div style="padding-bottom: 7px">
                 <span class="formFiledTitle">Associé {{i + 1}}:</span>
@@ -130,7 +126,7 @@
                 </div>
               </ng-container>
             </div>
-            <!-- Add Associate Button-->
+            <!-- Add AssociateE Button-->
             <div>
               <button mat-flat-button (click)="addAssociate()">
                 <mat-icon color="primary">add</mat-icon>
@@ -197,17 +193,17 @@
             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="8px" fxLayoutAlign="space-between">
               <mat-form-field appearance="outline" color="accent">
                 <mat-label>Nom</mat-label>
-                <input matInput required>
+                <input matInput required [(ngModel)]="enterprise.anotherDirector.lastName">
                 <mat-icon matSuffix>account_circle</mat-icon>
               </mat-form-field>
               <mat-form-field appearance="outline" color="accent">
                 <mat-label>Prénom</mat-label>
-                <input matInput required>
+                <input matInput required [(ngModel)]="enterprise.anotherDirector.firstName">
                 <mat-icon matSuffix>account_circle</mat-icon>
               </mat-form-field>
               <mat-form-field appearance="outline" color="accent">
                 <mat-label>Email</mat-label>
-                <input matInput required>
+                <input matInput required [(ngModel)]="enterprise.anotherDirector.email">
                 <mat-icon matSuffix>mail</mat-icon>
               </mat-form-field>
             </div>
@@ -283,18 +279,18 @@
               <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="8px" fxLayoutAlign="space-between ">
                 <mat-form-field appearance="outline" color="accent">
                   <mat-label>Nom</mat-label>
-                  <input matInput >
+                  <input matInput [(ngModel)]="enterprise.generalDirector.lastName">
                   <mat-icon matSuffix>account_circle</mat-icon>
                 </mat-form-field>
                 <mat-form-field appearance="outline" color="accent">
                   <mat-label>Prénom</mat-label>
-                  <input matInput >
+                  <input matInput [(ngModel)]="enterprise.generalDirector.firstName">
                   <mat-icon matSuffix>account_circle</mat-icon>
                 </mat-form-field>
                 <mat-form-field appearance="outline" color="accent">
                   <mat-label>Email</mat-label>
                   <input matInput >
-                  <mat-icon matSuffix>mail</mat-icon>
+                  <mat-icon matSuffix [(ngModel)]="enterprise.generalDirector.email">mail</mat-icon>
                 </mat-form-field>
               </div>
             </ng-container>
@@ -360,6 +356,14 @@
               <span style="font-size: 0.825rem; font-weight: normal; min-height: 55px">{{item.description}}</span>
             </div>
           </div>
+          <ng-container *ngIf="companyAllowedAddress">
+            <div style="padding-top: 15px">
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>Adresse</mat-label>
+                <input matInput [(ngModel)]="enterprise.address">
+              </mat-form-field>
+            </div>
+          </ng-container>
           <div style="text-align: right">
             <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
             <button mat-raised-button matStepperNext color="accent">Suivant</button>
@@ -436,6 +440,10 @@
             <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
             <button mat-raised-button matStepperNext color="accent">Suivant</button>
           </div>
+        </mat-step>
+        <!-- PDF Generator -->
+        <mat-step>
+          <button mat-raised-button color="accent" (click)="generatePdf()">Generate</button>
         </mat-step>
       </mat-horizontal-stepper>
     </div>
