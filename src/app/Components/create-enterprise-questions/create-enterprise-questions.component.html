@@ -5,6 +5,10 @@
     <ng-template matStepLabel >Projet</ng-template>
     <div class="secondStepper">
       <mat-horizontal-stepper linear #secondStepper color="accent">
+        <!-- PDF Generator -->
+        <mat-step>
+          <button mat-raised-button color="accent" (click)="generatePdf()">Generate</button>
+        </mat-step>
         <!-- When you want to creat your Enterprise -->
         <mat-step>
           <ng-template matStepLabel>Date de création</ng-template>
@@ -63,6 +67,14 @@
               <mat-label>Quelle est votre activité ?</mat-label>
               <input matInput placeholder="Ex: Restauration, VTC, WebDesigner ...">
               <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+          </ng-container>
+          <ng-container *ngIf="checkIfSelected()">
+            <h3 style="padding-top: 15px">Quelle est votre objet sociale?</h3>
+            <mat-form-field appearance="outline" color="accent">
+              <mat-label>Objet sociale</mat-label>
+              <input matInput>
+              <mat-icon matSuffix>emoji_objects</mat-icon>
             </mat-form-field>
           </ng-container>
           <div style="text-align: right">
@@ -124,7 +136,7 @@
                 <mat-icon color="primary">add</mat-icon>
                 <span style="color: #3239BB">Ajouter un associé</span>
               </button>
-              <button *ngIf="associates.length > 0" mat-flat-button (click)="associates.splice(-1,1)">
+              <button *ngIf="associates.length > 1" mat-flat-button (click)="associates.splice(-1,1)">
                 <mat-icon color="accent">remove</mat-icon>
                 <span style="color: #FF6584">Supprimer un associé</span>
               </button>
@@ -202,7 +214,7 @@
           </ng-container>
           <!-- Mat Step Buttons -->
           <div style="text-align: right;">
-            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button (click)="goBackward(stepper)" color="primary" style="margin-right: 15px">Précédent</button>
             <button mat-raised-button matStepperNext color="accent">Suivant</button>
           </div>
         </mat-step>
@@ -358,7 +370,7 @@
           <h3>Connaissez-vous déjà le nom de votre société ?</h3>
           <mat-form-field appearance="outline" color="accent">
             <mat-label>Nom de votre entreprise</mat-label>
-            <input matInput>
+            <input matInput [(ngModel)]="enterprise.name">
             <mat-icon matSuffix>apartment</mat-icon>
           </mat-form-field>
           <div style="text-align: center; padding-top: 15px">
