@@ -193,17 +193,17 @@
             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="8px" fxLayoutAlign="space-between">
               <mat-form-field appearance="outline" color="accent">
                 <mat-label>Nom</mat-label>
-                <input matInput required [(ngModel)]="enterprise.anotherDirector.lastName">
+                <input matInput required [(ngModel)]="enterprise.anotherPresident.lastName">
                 <mat-icon matSuffix>account_circle</mat-icon>
               </mat-form-field>
               <mat-form-field appearance="outline" color="accent">
                 <mat-label>Prénom</mat-label>
-                <input matInput required [(ngModel)]="enterprise.anotherDirector.firstName">
+                <input matInput required [(ngModel)]="enterprise.anotherPresident.firstName">
                 <mat-icon matSuffix>account_circle</mat-icon>
               </mat-form-field>
               <mat-form-field appearance="outline" color="accent">
                 <mat-label>Email</mat-label>
-                <input matInput required [(ngModel)]="enterprise.anotherDirector.email">
+                <input matInput required [(ngModel)]="enterprise.anotherPresident.email">
                 <mat-icon matSuffix>mail</mat-icon>
               </mat-form-field>
             </div>
@@ -364,6 +364,19 @@
               </mat-form-field>
             </div>
           </ng-container>
+          <ng-container *ngIf="isDirectDuDroitPremise">
+            <div style="padding-top: 15px">
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>Ville</mat-label>
+                <mat-select [(ngModel)]="address">
+                  <mat-option value="Direct Du Droit Paris 00000">Paris</mat-option>
+                  <mat-option value="Direct Du Droit Nice 00000">Nice</mat-option>
+                  <mat-option value="Direct Du Droit Toulouse 00000">Toulouse</mat-option>
+                  <mat-option value="Direct Du Droit Genéve 00000">Genéve</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </ng-container>
           <div style="text-align: right">
             <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
             <button mat-raised-button matStepperNext color="accent">Suivant</button>
@@ -439,6 +452,22 @@
           <div style="text-align: right">
             <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
             <button mat-raised-button matStepperNext color="accent">Suivant</button>
+          </div>
+        </mat-step>
+        <!-- RCS -->
+        <mat-step>
+          <h3>Quel RCS vous convient?</h3>
+          <p>
+            Ces informations nous permettront de vous aider au cours de votre processus de création.
+          </p>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>Choisir RCS</mat-label>
+            <input matInput [(ngModel)]="enterprise.RCS">
+            <mat-icon matSuffix>location_city</mat-icon>
+          </mat-form-field>
+          <div style="text-align: right">
+            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button matStepperNext (click)="fillEnterprise()" color="accent">Suivant</button>
           </div>
         </mat-step>
         <!-- PDF Generator -->

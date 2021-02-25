@@ -5,6 +5,7 @@ export class AssociateE {
   firstName!: string;
   lastName!: string;
   birthDate!: Date;
+  isPresident!: boolean;
   isGeneralDirector!: boolean;
   depositMoney!: number;
   percentage!: string;

@@ -17,13 +17,14 @@ export class Enterprise {
   associates!: [AssociateE];
   bankAccountType!: EnterpriseBankAccount;
   activity!: string;
-  anotherDirector!: AnotherDirector;
+  RCS!: string;
+  anotherPresident!: AnotherDirector;
   generalDirector!: GeneralDirector;
   constructor() {
     this.bankAccountType = new EnterpriseBankAccount();
     // @ts-ignore
     this.associates = [];
-    this.anotherDirector = new AnotherDirector();
+    this.anotherPresident = new AnotherDirector();
     this.generalDirector = new GeneralDirector();
   }
 }

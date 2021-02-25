@@ -31,6 +31,7 @@ class Associate {
 }
 
 interface BankAccount {
+  name: string;
   description: string;
   logo: string;
   active: boolean;
@@ -79,17 +80,19 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
   // BankDetails
   // @ts-ignore
   bankDetails: [BankAccount] = [
-    {description: 'Avec Qonto, 100% en ligne (sans engagement) - Plus rapide', logo: '' , active: false},
-    {description: 'Avec BNP Paribas (gratuit, sans engagement)', logo: 'bnp' , active: false},
-    {description: 'Dans une autre banque de mon choix', logo: '' , active: false},
-    {description: 'A la Caisse des Dépôts (peu fréquent)', logo: '' , active: false},
-    {description: 'Chez un notaire (peu fréquent)', logo: '' , active: false},
-    {description: 'Je ne sais pas encore', logo: '' , active: false},
+    {name: 'Qonto', description: 'Avec Qonto, 100% en ligne (sans engagement) - Plus rapide', logo: '' , active: false},
+    {name: 'BNP', description: 'Avec BNP Paribas (gratuit, sans engagement)', logo: 'bnp' , active: false},
+    {name: 'Banque de mon choix', description: 'Dans une autre banque de mon choix', logo: '' , active: false},
+    {name: 'Caisse des Dépôts', description: 'A la Caisse des Dépôts (peu fréquent)', logo: '' , active: false},
+    {name: 'Chez un notaire', description: 'Chez un notaire (peu fréquent)', logo: '' , active: false},
+    {name: '', description: 'Je ne sais pas encore', logo: '' , active: false},
   ];
   bnpBank!: boolean;
   bnpCustomer!: string;
   // Company Premises
   companyPremise = companyPremises;
+  isDirectDuDroitPremise!: boolean;
+  address!: string;
   // Classes Management
   enterprise: Enterprise;
   constructor(private adapter: DateAdapter<any>) {
@@ -148,16 +151,21 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
     if (bankAccount === this.bankDetails.find(item => item.logo === 'bnp')) {
       this.bnpBank = true;
     }
-    this.enterprise.bankAccountType.name = bankAccount.description;
+    this.enterprise.bankAccountType.name = bankAccount.name;
   }
   chooseCompanyPremise(premise: CompanyPremises): void {
     this.companyAllowedAddress = false;
+    this.isDirectDuDroitPremise = false;
+    this.enterprise.address = '';
     this.companyPremise.forEach(item => item.active = false);
     premise.active = true;
-    if (premise.name !== 'ddr' && premise.name !== 'pr'){
+    if (premise.name !== 'ddr'){
       this.companyAllowedAddress = true;
+    } else {
+      this.isDirectDuDroitPremise = true;
     }
   }
+
   // controls
   checkIfSelected(): boolean {
     return this.companyActivitiesExample.some(item => item.active);
@@ -190,7 +198,6 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
     this.nextButton = !!this.associates.find(item => !item.name || !item.lastName);
   }
   fillEnterprise(): void {
-    this.enterprise = new Enterprise();
     this.associates.forEach(item => {
       const associateE = new AssociateE();
       associateE.firstName = item.name;
@@ -198,9 +205,13 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
       associateE.gender = item.gender;
       associateE.depositMoney = item.depositMoney;
       associateE.percentage = item.percentage;
+      associateE.isPresident = item.active;
       associateE.isGeneralDirector = item.generalDirector;
       this.enterprise.associates.push(associateE);
     });
+    if (!this.enterprise.address || this.enterprise.address === '') {
+      this.enterprise.address = this.address;
+    }
   }
   // PDF Generator
 
@@ -210,22 +221,15 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
     tab = [];
     if (step === 1) {
       this.associates.forEach(item => {
-        tab.push(item.name + ' ' + item.lastName);
+        tab.push(item.lastName + ' ' + item.name);
       });
     } else if (step === 2) {
       this.associates.forEach(item => {
-        tab.push(item.name + ' ' + item.lastName + ' apporte une somme en numéraire de ' + item.depositMoney + ' €.');
-      });
-    } else if (step === 3) {
-      this.associates.forEach(item => {
-        tab.push(item.name + ' ' + item.lastName + ' détient  ' + item.depositMoney / 10 + ' actions.');
+        tab.push(item.lastName + ' ' + item.name + ' apporte une somme en numéraire de ' + item.depositMoney + ' €.');
       });
     } else {
-      this.associates.forEach((item, idx) => {
-        tab.push(item.lastName + ' ' + item.name);
-        if (idx < this.associates.length - 1) {
-          tab.push(' ou ');
-        }
+      this.associates.forEach(item => {
+        tab.push(item.lastName + ' ' + item.name + ' détient  ' + item.depositMoney / 10 + ' actions.');
       });
     }
     return tab;
@@ -235,8 +239,20 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
     // @ts-ignore
     tab = [];
     this.associates.forEach(item => tab.push({width: '30%', text: item.lastName + ' ' + item.name, color: 'red'}));
-    console.log(tab);
     return tab;
+  }
+  getPresident(): string {
+    let president = '';
+    if (this.enterprise.associates.some(item => item.isPresident)) {
+      this.enterprise.associates.find(item => {
+        if (item.isPresident) {
+           president = item.lastName + ' ' + item.firstName;
+        }
+      });
+    } else {
+      president = this.enterprise.anotherPresident.lastName + ' ' + this.enterprise.anotherPresident.firstName;
+    }
+    return president;
   }
   generatePdf(): void{
     const documentDefinition = {
@@ -366,11 +382,11 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
           style: ['marginTopAndBottom', 'subtitleStyle']
         },
         {
-          text: 'Le président est désigné par les actionnaires réunis en assemblée générale extraordinaire. La durée de son mandat est de [nombre] ans.',
+          text: 'Le président est désigné par les actionnaires réunis en assemblée générale extraordinaire.',
           style: 'marginTopAndBottom'
         },
         {
-          text: 'Le premier président est ' + this.getAssociates(4),
+          text: 'Le premier président est ' + this.getPresident(),
           style: 'marginTopAndBottom'
         },
         {
@@ -446,10 +462,6 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
           style: 'marginTopAndBottom'
         },
         {
-          text: 'Indiquer aussi la majorité nécessaire pour prendre des décisions selon qu’elles entraînent ou non des modifications statutaires',
-          style: ['marginTopAndBottom', 'redText']
-        },
-        {
           text: 'Article quatorze : Exercice social',
           style: ['marginTopAndBottom', 'subtitleStyle']
         },
@@ -462,7 +474,7 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
           margin: [0, 10, 0, 0]
         },
         {
-          text: 'de l\'année en cours',
+          text: '2021',
           margin: [0, 0, 0, 10],
           color: 'red',
           bold: true
@@ -534,11 +546,11 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
         {
           text: ['Un état des démarches et des actes effectués pour le compte de la société en formation est joint en annexe aux présents statuts. La signature desdits statuts impliquera la reprise de ces actes par la société après l’immatriculation de celle-ci au RCS de ',
             {
-              text: '[ville du tribunal de commerce compétent selon le lieu du siège social]',
+              text: this.enterprise.RCS,
               color: 'red'
             },
             {
-              text: 'Dès son immatriculation au RCS, la société jouira de la personnalité morale.'
+              text: ' Dès son immatriculation au RCS, la société jouira de la personnalité morale.'
             }
           ],
           style: 'marginTopAndBottom'
@@ -553,13 +565,13 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
         },
         {
           text: [
-            {text: 'Fait le ['},
-            {text: 'date', color: 'red'},
-            {text: '] à ['},
-            {text: 'ville', color: 'red'},
-            {text: '] en ['},
-            {text: 'X', color: 'red'},
-            {text: '] exemplaires.'},
+            {text: 'Fait le '},
+            {text: '. . / . . / . . . . ', color: 'red'},
+            {text: 'à '},
+            {text: '.............., ...........', color: 'red'},
+            {text: ' en '},
+            {text: '3', color: 'red'},
+            {text: ' exemplaires.'},
           ],
           margin: [0, 40, 0, 40]
         },
@@ -608,4 +620,5 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
     };
     pdfMake.createPdf(documentDefinition).open();
   }
+
 }
