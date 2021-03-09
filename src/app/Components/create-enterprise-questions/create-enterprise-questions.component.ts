@@ -8,6 +8,10 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {Enterprise} from '../../Models/Enterprise';
 import {AssociateE} from '../../Models/AssociateE';
+import {rcsData} from '../../data/RCS';
+import {DIRECT_CITY} from '../../data/directAddress';
+import {MatSelectChange} from '@angular/material/select';
+import {Signer} from '../../Models/Signer';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 interface CompanyActivities {
   name: string;
@@ -93,13 +97,22 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
   companyPremise = companyPremises;
   isDirectDuDroitPremise!: boolean;
   address!: string;
+  townsCity!: string;
   // Classes Management
   enterprise: Enterprise;
+  // RCS
+  rcs = rcsData;
+  // address
+  directCity = DIRECT_CITY;
+  // Signer
+  signer: Signer;
   constructor(private adapter: DateAdapter<any>) {
     this.associates = [new Associate()];
     this.associates.push(new Associate());
     this.enterprise = new Enterprise();
+    this.signer = new Signer();
   }
+  town = [];
 
   ngOnInit(): void {
     this.adapter.setLocale('fr');
@@ -211,10 +224,23 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
     });
     if (!this.enterprise.address || this.enterprise.address === '') {
       this.enterprise.address = this.address;
+      if (this.townsCity) {
+        this.enterprise.address = this.enterprise.address + ', ' + this.townsCity;
+      }
     }
   }
   // PDF Generator
-
+  getTown($event: MatSelectChange, city: string): void {
+    console.log(this.address);
+    this.town = [];
+    this.directCity.forEach(item => {
+      if (item.city === city) {
+        // @ts-ignore
+        item.town.forEach(i => this.town.push(i));
+        console.log(this.town);
+      }
+    });
+  }
   getAssociates(step: number): [string] {
     let tab: [string];
     // @ts-ignore
@@ -577,6 +603,203 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
         },
         {
           columns: this.pdfSignatures()
+        },
+        // Sign PDF
+        {
+          text: 'CHAMBRE DE COMMERCE ET D\'INDUSTRIE DE PARIS', pageBreak: 'before', margin: [0, 50, 0, 0],
+          bold: true, fontSize: 13, alignment: 'center'
+        },
+        {
+          text: 'Centre de Formalités des Entreprises', margin: [0, 1, 0, 40],
+          bold: true, fontSize: 12, alignment: 'center'
+        },
+        {
+          text: 'DECLARATION DE NON CONDAMNATION ET DE FILIATION',
+          alignment: 'center', margin: [0, 0, 0, 30], fontSize: 11
+        },
+        {
+          text: 'Je soussigné(e)',
+          fontSize: 11
+        },
+        {
+          columns: [
+            {
+              width: 'auto',
+              text: 'Nom :',
+              fontSize: 11
+            },
+            {
+              width: '60%',
+              text: this.signer.firstName,
+              fontSize: 11,
+              margin: [10, 0, 0, 0],
+              bold: true
+            },
+            {
+              width: 'auto',
+              text: '(nom de naissance suivi du nom d\'usage)',
+              fontSize: 9
+            }
+          ], margin: [0, 10, 0, 5]
+        },
+        {
+          columns: [
+            {
+              width: 'auto',
+              text: 'Prénoms :',
+              fontSize: 11
+            },
+            {
+              width: '60%',
+              text: this.signer.lastName,
+              fontSize: 11,
+              margin: [10, 0, 0, 0],
+              bold: true
+            }
+          ], margin: [0, 5, 0, 5]
+        },
+        {
+          columns: [
+            {
+              width: 'auto',
+              text: 'demeurant :',
+              fontSize: 11
+            },
+            {
+              width: '60%',
+              text: this.signer.dem,
+              fontSize: 11,
+              margin: [10, 0, 0, 0],
+              bold: true
+            }
+          ], margin: [0, 5, 0, 5]
+        },
+        {
+          columns: [
+            {
+              width: 'auto',
+              text: 'Né(e) le :',
+              fontSize: 11
+            },
+            {
+              width: '40%',
+              text: this.signer.birthDate.toLocaleDateString(),
+              fontSize: 11,
+              margin: [10, 0, 0, 0],
+              bold: true
+            },
+            {
+              width: 'auto',
+              text: 'à :',
+              fontSize: 11,
+              margin: [10, 0, 0, 0],
+              bold: true
+            },
+            {
+              width: '40%',
+              text: this.signer.city,
+              fontSize: 11
+            },
+          ], margin: [0, 5, 0, 5]
+        },
+        {
+          columns: [
+            {
+              width: 'auto',
+              text: 'Fils - Fille de (1) :',
+              fontSize: 11
+            },
+            {
+              width: '60%',
+              text: this.signer.fatherFirstName + ' ' + this.signer.fatherLastName,
+              fontSize: 11,
+              margin: [10, 0, 0, 0],
+              bold: true
+            },
+            {
+              width: 'auto',
+              text: '(nom du père et prénom(s))',
+              fontSize: 9
+            }
+          ], margin: [0, 5, 0, 5]
+        },
+        {
+          columns: [
+            {
+              width: 'auto',
+              text: 'et de :',
+              fontSize: 11
+            },
+            {
+              width: '57%',
+              text: this.signer.motherFirstName + ' ' + this.signer.motherLastName,
+              fontSize: 11,
+              margin: [10, 0, 0, 0],
+              bold: true
+            },
+            {
+              width: 'auto',
+              text: '(nom de naissance de la mère et prénom(s))',
+              fontSize: 9
+            }
+          ], margin: [0, 5, 0, 5]
+        },
+        {
+          text: 'Déclare sur l\'honneur, conformément aux dispositions de l\'art. A.123-51 du code de commerce, n\'avoir fait l\'objet d\'aucune condamnation pénale ou sanction civile ou administrative de nature à m\'interdire soit d\'exercer une activité commerciale, soit de gérer, d\'administrer ou de diriger une personne morale.',
+          fontSize: 12,
+          lineHeight: 1.5,
+          margin: [0, 25, 0, 0]
+        },
+        {
+          columns: [
+            {
+              width: 'auto',
+              text: 'Fait à :',
+              fontSize: 11
+            },
+            {
+              width: '40%',
+              text: '',
+              margin: [5, 0, 0, 0],
+              fontSize: 11
+            },
+            {
+              width: 'auto',
+              text: 'Le :',
+              fontSize: 11
+            },
+            {
+              width: '40%',
+              text: '',
+              margin: [5, 0, 0, 0],
+              fontSize: 11
+            },
+          ], margin: [50, 35, 0 , 20]
+        },
+        {
+          text: 'Signature',
+          style: 'centerAlignment',
+          fontSize: 11,
+          margin: [0, 30, 0, 70]
+        },
+        {
+          text: '(1) Rayer la mention inutile',
+          fontSize: 10,
+          margin: [0, 0, 0, 40]
+        },
+        {
+          text: 'Article L.123-5 du code de commerce',
+          fontSize: 10,
+          bold: true,
+          margin: [0, 0, 0, 20]
+        },
+        {
+          text: 'Le fait de donner, de mauvaise foi, des indications inexactes ou incomplètes en vue d\'une immatriculation,\n' +
+            'd\'une radiation ou d\'une mention complémentaire ou rectificative au registre du commerce et des sociétés est\n' +
+            'puni d\'une amende de 4 500 € et d\'un emprisonnement de 6 mois.\n' +
+            'Les dispositions des deuxième et troisième alinéas de l\'article L. 123-4 sont applicables dans les cas prévus au\n' +
+            'présent article.',
+          fontSize: 10
         }
       ],
       styles: {
@@ -620,5 +843,4 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
     };
     pdfMake.createPdf(documentDefinition).open();
   }
-
 }

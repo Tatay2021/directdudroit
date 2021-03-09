@@ -368,11 +368,18 @@
             <div style="padding-top: 15px">
               <mat-form-field appearance="outline" color="accent">
                 <mat-label>Ville</mat-label>
-                <mat-select [(ngModel)]="address">
-                  <mat-option value="Direct Du Droit Paris 00000">Paris</mat-option>
-                  <mat-option value="Direct Du Droit Nice 00000">Nice</mat-option>
-                  <mat-option value="Direct Du Droit Toulouse 00000">Toulouse</mat-option>
-                  <mat-option value="Direct Du Droit Genéve 00000">Genéve</mat-option>
+                <mat-select [(ngModel)]="address" (selectionChange)="getTown($event, address)">
+                  <mat-option *ngFor="let item of directCity" [value]="item.city">
+                    {{item.city}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>Cité</mat-label>
+                <mat-select [(ngModel)]="townsCity">
+                  <mat-option *ngFor="let item of town" [value]="item">
+                    {{item}}
+                  </mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -462,18 +469,88 @@
           </p>
           <mat-form-field appearance="outline" color="accent">
             <mat-label>Choisir RCS</mat-label>
-            <input matInput [(ngModel)]="enterprise.RCS">
-            <mat-icon matSuffix>location_city</mat-icon>
+            <mat-select [(ngModel)]="enterprise.RCS">
+              <mat-option *ngFor="let item of rcs" [value]="item">
+                {{item}}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
           <div style="text-align: right">
             <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
             <button mat-raised-button matStepperNext (click)="fillEnterprise()" color="accent">Suivant</button>
           </div>
         </mat-step>
+        <!-- Sign -->
+        <mat-step>
+          <h3>Déclaration de non condamnation et de filiation</h3>
+          <p>
+            Ces informations nous permettront de vous aider au cours de votre processus de création.
+          </p>
+          <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="15px">
+            <mat-form-field appearance="outline" color="accent">
+              <mat-label>Nom du signateur</mat-label>
+              <input matInput [(ngModel)]="signer.firstName">
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+              <mat-label>Prénom du signateur</mat-label>
+              <input matInput [(ngModel)]="signer.lastName">
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+          </div>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>Demeurant</mat-label>
+            <input matInput [(ngModel)]="signer.dem">
+            <mat-icon matSuffix>account_circle</mat-icon>
+          </mat-form-field>
+          <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="15px">
+            <mat-form-field appearance="outline" color="accent">
+              <mat-label>Date de naissance</mat-label>
+              <input matInput [matDatepicker]="birth" [(ngModel)]="signer.birthDate">
+              <mat-datepicker-toggle matSuffix [for]="birth"></mat-datepicker-toggle>
+              <mat-datepicker #birth></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+              <mat-label>Ville de naissance</mat-label>
+              <input matInput [(ngModel)]="signer.city">
+              <mat-icon matSuffix>room</mat-icon>
+            </mat-form-field>
+          </div>
+          <h6 style="font-weight: bold; font-size: 0.875rem; margin-top: 10px; margin-bottom: 5px">Autres informations :</h6>
+          <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="15px">
+            <mat-form-field appearance="outline" color="accent">
+              <mat-label>Nom du père</mat-label>
+              <input matInput [(ngModel)]="signer.fatherFirstName">
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+              <mat-label>Prénom du père</mat-label>
+              <input matInput [(ngModel)]="signer.fatherLastName">
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+          </div>
+          <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="15px">
+            <mat-form-field appearance="outline" color="accent">
+              <mat-label>Nom de la mère</mat-label>
+              <input matInput [(ngModel)]="signer.motherFirstName">
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+              <mat-label>Prénom de la mère</mat-label>
+              <input matInput [(ngModel)]="signer.motherLastName">
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+          </div>
+          <div style="text-align: right">
+            <button mat-raised-button matStepperPrevious color="primary" style="margin-right: 15px">Précédent</button>
+            <button mat-raised-button matStepperNext color="accent">Suivant</button>
+          </div>
+        </mat-step>
         <!-- PDF Generator -->
         <mat-step>
           <button mat-raised-button color="accent" (click)="generatePdf()">Generate</button>
         </mat-step>
+
       </mat-horizontal-stepper>
     </div>
   </mat-step>
