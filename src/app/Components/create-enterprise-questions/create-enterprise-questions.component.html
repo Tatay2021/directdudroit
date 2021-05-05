@@ -546,6 +546,14 @@
             <button mat-raised-button matStepperNext color="accent">Suivant</button>
           </div>
         </mat-step>
+        <!-- Payment -->
+        <mat-step>
+          <h3>Payment</h3>
+          <p>
+            Vous devez payer vos frais de creation d'entreprise.
+          </p>
+          <div id="myPaypalButtons"></div>
+        </mat-step>
         <!-- PDF Generator -->
         <mat-step>
           <button mat-raised-button color="accent" (click)="generatePdf()">Generate</button>

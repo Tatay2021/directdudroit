@@ -33,6 +33,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MAT_DATE_LOCALE, MatNativeDateModule, MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
+import { PaymentComponent } from './Components/payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {MatSelectModule} from '@angular/material/select';
     CreateEnterpriseComponent,
     IntroSplashComponent,
     CreateEnterpriseQuestionsComponent,
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,

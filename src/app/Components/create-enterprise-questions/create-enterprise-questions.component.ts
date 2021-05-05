@@ -12,6 +12,7 @@ import {rcsData} from '../../data/RCS';
 import {DIRECT_CITY} from '../../data/directAddress';
 import {MatSelectChange} from '@angular/material/select';
 import {Signer} from '../../Models/Signer';
+import {render} from 'creditcardpayments/creditCardPayments';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 interface CompanyActivities {
   name: string;
@@ -111,6 +112,12 @@ export class CreateEnterpriseQuestionsComponent implements OnInit {
     this.associates.push(new Associate());
     this.enterprise = new Enterprise();
     this.signer = new Signer();
+    render({
+      id: '#myPaypalButtons',
+      currency: 'EUR',
+      value: '0.01',
+      onApprove: details => alert('Payment successfully.')
+    });
   }
   town = [];
 
